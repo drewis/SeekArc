@@ -4,20 +4,20 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.10+'
+        classpath 'com.android.tools.build:gradle:0.12.+'
     }
 }
 
-apply plugin: 'android-library'
+apply plugin: 'com.android.library'
 
 
 dependencies {
-    compile files('libs/android-support-v4.jar')
+    compile 'com.android.support:support-v4:20.+'
 }
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion "19.0.2"
+    compileSdkVersion 20
+    buildToolsVersion "20"
      sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -32,4 +32,9 @@ android {
         instrumentTest.setRoot('tests')
     }
 }
+
+group "com.triggertrap"
+version "1.0-SNAPSHOT"
+
+apply from: '../../../OpenSilk/maven_local.gradle'
 
