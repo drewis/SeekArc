@@ -395,7 +395,8 @@ public class SeekArc extends SeekBar {
 	 * 
 	 * @see SeekArc.OnSeekBarChangeListener
 	 */
-	public void setOnSeekArcChangeListener(OnSeekBarChangeListener l) {
+    @Override
+	public void setOnSeekBarChangeListener(OnSeekBarChangeListener l) {
 		mOnChangeListener = l;
 	}
 
