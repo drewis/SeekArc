@@ -24,8 +24,6 @@
 package com.triggertrap.sample;
 
 import android.app.Activity;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -34,7 +32,6 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.triggertrap.seekarc.SeekArc;
-import com.triggertrap.seekarc.SeekArc.OnSeekArcChangeListener;
 
 /**
  * 
@@ -80,17 +77,17 @@ public class SimpleActivity extends Activity {
 //        mSeekArc.setArcColor(Color.CYAN);
 //        mSeekArc.getThumb().mutate().setColorFilter(Color.CYAN, PorterDuff.Mode.SRC_IN);
 
-		mSeekArc.setOnSeekArcChangeListener(new OnSeekArcChangeListener() {
+		mSeekArc.setOnSeekArcChangeListener(new OnSeekBarChangeListener() {
 			
 			@Override
-			public void onStopTrackingTouch(SeekArc seekArc) {	
+			public void onStopTrackingTouch(SeekBar seekArc) {
 			}		
 			@Override
-			public void onStartTrackingTouch(SeekArc seekArc) {
+			public void onStartTrackingTouch(SeekBar seekArc) {
 			}
 			
 			@Override
-			public void onProgressChanged(SeekArc seekArc, int progress,
+			public void onProgressChanged(SeekBar seekArc, int progress,
 					boolean fromUser) {
 				mSeekArcProgress.setText(String.valueOf(progress));
 			}

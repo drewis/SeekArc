@@ -47,12 +47,12 @@
             android:padding="30dp"
             seekarc:arcColor="@color/dark_red"
             seekarc:clockwise="true"
-            seekarc:max="150"
+            android:max="150"
             seekarc:progressColor="@color/red"
             seekarc:rotation="180"
             seekarc:startAngle="30"
             seekarc:sweepAngle="300"
-            seekarc:thumb="@drawable/custom_seek_arc_control_selector"
+            android:thumb="@drawable/custom_seek_arc_control_selector"
             seekarc:touchInside="true" />
 
         <TextView

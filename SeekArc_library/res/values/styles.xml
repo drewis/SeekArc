@@ -25,13 +25,13 @@
 
     <style name="SeekArc">
         <item name="arcColor">@color/progress_gray_dark</item>
-        <item name="thumb">@drawable/seek_arc_control_selector</item>
+        <item name="android:thumb">@drawable/seek_arc_control_selector</item>
         <item name="progressColor">@android:color/holo_blue_light</item>
     </style>
     
     <style name="SeekArcLight">
         <item name="arcColor">@color/progress_gray</item>
-        <item name="thumb">@drawable/seek_arc_control_selector</item>
+        <item name="android:thumb">@drawable/seek_arc_control_selector</item>
         <item name="progressColor">@android:color/holo_blue_light</item>
     </style>
  

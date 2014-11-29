@@ -33,7 +33,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
+import android.widget.SeekBar;
 
 /**
  * 
@@ -45,7 +45,7 @@ import android.view.View;
  * @author Neil Davies
  * 
  */
-public class SeekArc extends View {
+public class SeekArc extends SeekBar {
 
 	private static final String TAG = SeekArc.class.getSimpleName();
 	private static int INVALID_PROGRESS_VALUE = -1;
@@ -95,7 +95,7 @@ public class SeekArc extends View {
 	/**
 	 * Give the SeekArc rounded edges
 	 */
-	private boolean mRoundedEdges = false;
+	private boolean mRoundedEdges = true;
 	
 	/**
 	 * Enable touch inside the SeekArc
@@ -119,62 +119,18 @@ public class SeekArc extends View {
 	private int mThumbYPos;
 	private double mTouchAngle;
 	private float mTouchIgnoreRadius;
-	private OnSeekArcChangeListener mOnSeekArcChangeListener;
-
-	public interface OnSeekArcChangeListener {
-
-		/**
-		 * Notification that the progress level has changed. Clients can use the
-		 * fromUser parameter to distinguish user-initiated changes from those
-		 * that occurred programmatically.
-		 * 
-		 * @param seekArc
-		 *            The SeekArc whose progress has changed
-		 * @param progress
-		 *            The current progress level. This will be in the range
-		 *            0..max where max was set by
-		 *            {@link ProgressArc#setMax(int)}. (The default value for
-		 *            max is 100.)
-		 * @param fromUser
-		 *            True if the progress change was initiated by the user.
-		 */
-		void onProgressChanged(SeekArc seekArc, int progress, boolean fromUser);
-
-		/**
-		 * Notification that the user has started a touch gesture. Clients may
-		 * want to use this to disable advancing the seekbar.
-		 * 
-		 * @param seekArc
-		 *            The SeekArc in which the touch gesture began
-		 */
-		void onStartTrackingTouch(SeekArc seekArc);
-
-		/**
-		 * Notification that the user has finished a touch gesture. Clients may
-		 * want to use this to re-enable advancing the seekarc.
-		 * 
-		 * @param seekArc
-		 *            The SeekArc in which the touch gesture began
-		 */
-		void onStopTrackingTouch(SeekArc seekArc);
-	}
+	private OnSeekBarChangeListener mOnChangeListener;
 
 	public SeekArc(Context context) {
-		super(context);
-		init(context, null, 0);
+		this(context, null);
 	}
 
 	public SeekArc(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		init(context, attrs, R.attr.seekArcStyle);
+		this(context, attrs, R.attr.seekArcStyle);
 	}
 
 	public SeekArc(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		init(context, attrs, defStyle);
-	}
-
-	private void init(Context context, AttributeSet attrs, int defStyle) {
 
 		Log.d(TAG, "Initialising SeekArc");
 		final Resources res = getResources();
@@ -195,7 +151,7 @@ public class SeekArc extends View {
 			final TypedArray a = context.obtainStyledAttributes(attrs,
 					R.styleable.SeekArc, defStyle, 0);
 
-			Drawable thumb = a.getDrawable(R.styleable.SeekArc_thumb);
+			Drawable thumb = a.getDrawable(R.styleable.SeekArc_android_thumb);
 			if (thumb != null) {
 				mThumb = thumb;
 			}
@@ -205,8 +161,8 @@ public class SeekArc extends View {
 			mThumb.setBounds(-thumbHalfWidth, -thumbHalfheight, thumbHalfWidth,
 					thumbHalfheight);
 
-			mMax = a.getInteger(R.styleable.SeekArc_max, mMax);
-			mProgress = a.getInteger(R.styleable.SeekArc_progress, mProgress);
+			mMax = a.getInteger(R.styleable.SeekArc_android_max, mMax);
+			mProgress = a.getInteger(R.styleable.SeekArc_android_progress, mProgress);
 			mProgressWidth = (int) a.getDimension(
 					R.styleable.SeekArc_progressWidth, mProgressWidth);
 			mArcWidth = (int) a.getDimension(R.styleable.SeekArc_arcWidth,
@@ -267,7 +223,7 @@ public class SeekArc extends View {
 
 		// Draw the thumb nail
 		canvas.translate(mTranslateX -mThumbXPos, mTranslateY -mThumbYPos);
-		mThumb.draw(canvas);		
+		mThumb.draw(canvas);
 	}
 
 
@@ -297,7 +253,7 @@ public class SeekArc extends View {
 		mThumbYPos = (int) (mArcRadius * Math.sin(Math.toRadians(arcStart)));
 		
 		setTouchInSide(mTouchInside);
-		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        setMeasuredDimension(width, height);
 	}
 
 	@Override
@@ -335,14 +291,14 @@ public class SeekArc extends View {
 	}
 
 	private void onStartTrackingTouch() {
-		if (mOnSeekArcChangeListener != null) {
-			mOnSeekArcChangeListener.onStartTrackingTouch(this);
+		if (mOnChangeListener != null) {
+			mOnChangeListener.onStartTrackingTouch(this);
 		}
 	}
 
 	private void onStopTrackingTouch() {
-		if (mOnSeekArcChangeListener != null) {
-			mOnSeekArcChangeListener.onStopTrackingTouch(this);
+		if (mOnChangeListener != null) {
+			mOnChangeListener.onStopTrackingTouch(this);
 		}
 	}
 
@@ -414,9 +370,8 @@ public class SeekArc extends View {
 			return;
 		}
 
-		if (mOnSeekArcChangeListener != null) {
-			mOnSeekArcChangeListener
-					.onProgressChanged(this, progress, fromUser);
+		if (mOnChangeListener != null) {
+			mOnChangeListener.onProgressChanged(this, progress, fromUser);
 		}
 
 		progress = (progress > mMax) ? mMax : progress;
@@ -440,18 +395,21 @@ public class SeekArc extends View {
 	 * 
 	 * @see SeekArc.OnSeekBarChangeListener
 	 */
-	public void setOnSeekArcChangeListener(OnSeekArcChangeListener l) {
-		mOnSeekArcChangeListener = l;
+	public void setOnSeekArcChangeListener(OnSeekBarChangeListener l) {
+		mOnChangeListener = l;
 	}
 
+    @Override
     public Drawable getThumb() {
         return mThumb;
     }
 
+    @Override
 	public void setProgress(int progress) {
 		updateProgress(progress, false);
 	}
 
+    @Override
 	public int getProgress() {
 		return mProgress;
 	}
