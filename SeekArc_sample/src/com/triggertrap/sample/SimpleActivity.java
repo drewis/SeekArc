@@ -24,6 +24,8 @@
 package com.triggertrap.sample;
 
 import android.app.Activity;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -74,7 +76,10 @@ public class SimpleActivity extends Activity {
 		mSweepAngle.setProgress(mSeekArc.getSweepAngle());
 		mArcWidth.setProgress(mSeekArc.getArcWidth());
 		mProgressWidth.setProgress(mSeekArc.getProgressWidth());
-		
+
+//        mSeekArc.setArcColor(Color.CYAN);
+//        mSeekArc.getThumb().mutate().setColorFilter(Color.CYAN, PorterDuff.Mode.SRC_IN);
+
 		mSeekArc.setOnSeekArcChangeListener(new OnSeekArcChangeListener() {
 			
 			@Override
