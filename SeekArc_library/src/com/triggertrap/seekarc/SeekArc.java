@@ -199,8 +199,6 @@ public class SeekArc extends View {
 			if (thumb != null) {
 				mThumb = thumb;
 			}
-
-			
 			
 			thumbHalfheight = (int) mThumb.getIntrinsicHeight() / 2;
 			thumbHalfWidth = (int) mThumb.getIntrinsicWidth() / 2;
@@ -246,11 +244,7 @@ public class SeekArc extends View {
 		mArcPaint.setStrokeWidth(mArcWidth);
 		//mArcPaint.setAlpha(45);
 
-		mProgressPaint = new Paint();
-		mProgressPaint.setColor(progressColor);
-		mProgressPaint.setAntiAlias(true);
-		mProgressPaint.setStyle(Paint.Style.STROKE);
-		mProgressPaint.setStrokeWidth(mProgressWidth);
+		setArcColor(progressColor);
 
 		if (mRoundedEdges) {
 			mArcPaint.setStrokeCap(Paint.Cap.ROUND);
@@ -450,6 +444,10 @@ public class SeekArc extends View {
 		mOnSeekArcChangeListener = l;
 	}
 
+    public Drawable getThumb() {
+        return mThumb;
+    }
+
 	public void setProgress(int progress) {
 		updateProgress(progress, false);
 	}
@@ -466,6 +464,14 @@ public class SeekArc extends View {
 		this.mProgressWidth = mProgressWidth;
 		mProgressPaint.setStrokeWidth(mProgressWidth);
 	}
+
+    public void setArcColor(int color) {
+        mProgressPaint = new Paint();
+        mProgressPaint.setColor(color);
+        mProgressPaint.setAntiAlias(true);
+        mProgressPaint.setStyle(Paint.Style.STROKE);
+        mProgressPaint.setStrokeWidth(mProgressWidth);
+    }
 	
 	public int getArcWidth() {
 		return mArcWidth;
