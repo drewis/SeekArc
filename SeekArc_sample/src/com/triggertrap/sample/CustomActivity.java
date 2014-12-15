@@ -24,9 +24,11 @@
 package com.triggertrap.sample;
 
 import com.triggertrap.seekarc.SeekArc;
+import com.triggertrap.seekarc.SeekArc.OnSeekArcChangeListener;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.view.Menu;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.SeekBar;
@@ -73,17 +75,17 @@ public class CustomActivity extends Activity {
 		mArcWidth.setProgress(mSeekArc.getArcWidth());
 		mProgressWidth.setProgress(mSeekArc.getProgressWidth());
 		
-		mSeekArc.setOnSeekArcChangeListener(new OnSeekBarChangeListener() {
+		mSeekArc.setOnSeekArcChangeListener(new OnSeekArcChangeListener() {
 			
 			@Override
-			public void onStopTrackingTouch(SeekBar seekArc) {
+			public void onStopTrackingTouch(SeekArc seekArc) {	
 			}		
 			@Override
-			public void onStartTrackingTouch(SeekBar seekArc) {
+			public void onStartTrackingTouch(SeekArc seekArc) {
 			}
 			
 			@Override
-			public void onProgressChanged(SeekBar seekArc, int progress,
+			public void onProgressChanged(SeekArc seekArc, int progress,
 					boolean fromUser) {
 				mSeekArcProgress.setText(String.valueOf(progress));
 			}

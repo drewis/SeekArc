@@ -8,6 +8,13 @@ dependencies {
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 21
+        versionCode 101
+        versionName "1.1-SNAPSHOT"
+    }
      sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -24,7 +31,7 @@ android {
 }
 
 group "com.triggertrap"
-version "1.1-SNAPSHOT"
+version android.defaultConfig.versionName
 
 apply from: '../../../OpenSilk/maven_local.gradle'
 

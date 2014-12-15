@@ -33,6 +33,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.SeekBar;
 
 /**
@@ -45,7 +46,7 @@ import android.widget.SeekBar;
  * @author Neil Davies
  * 
  */
-public class SeekArc extends SeekBar {
+public class SeekArc extends View {
 
 	private static final String TAG = SeekArc.class.getSimpleName();
 	private static int INVALID_PROGRESS_VALUE = -1;
@@ -119,9 +120,47 @@ public class SeekArc extends SeekBar {
 	private int mThumbYPos;
 	private double mTouchAngle;
 	private float mTouchIgnoreRadius;
-	private OnSeekBarChangeListener mOnChangeListener;
+	private OnSeekArcChangeListener mOnChangeListener;
 
-	public SeekArc(Context context) {
+    public interface OnSeekArcChangeListener {
+
+           /**
+            * Notification that the progress level has changed. Clients can use the
+            * fromUser parameter to distinguish user-initiated changes from those
+            * that occurred programmatically.
+            *
+            * @param seekArc
+            *            The SeekArc whose progress has changed
+            * @param progress
+            *            The current progress level. This will be in the range
+            *            0..max where max was set by
+            *            {@link ProgressArc#setMax(int)}. (The default value for
+            *            max is 100.)
+            * @param fromUser
+            *            True if the progress change was initiated by the user.
+            */
+           void onProgressChanged(SeekArc seekArc, int progress, boolean fromUser);
+
+           /**
+            * Notification that the user has started a touch gesture. Clients may
+            * want to use this to disable advancing the seekbar.
+            *
+            * @param seekArc
+            *            The SeekArc in which the touch gesture began
+            */
+           void onStartTrackingTouch(SeekArc seekArc);
+
+           /**
+            * Notification that the user has finished a touch gesture. Clients may
+            * want to use this to re-enable advancing the seekarc.
+            *
+            * @param seekArc
+            *            The SeekArc in which the touch gesture began
+            */
+           void onStopTrackingTouch(SeekArc seekArc);
+    }
+
+    public SeekArc(Context context) {
 		this(context, null);
 	}
 
@@ -393,24 +432,20 @@ public class SeekArc extends SeekBar {
 	 * @param l
 	 *            The seek bar notification listener
 	 * 
-	 * @see SeekArc.OnSeekBarChangeListener
+	 * @see SeekArc.OnSeekArcChangeListener
 	 */
-    @Override
-	public void setOnSeekBarChangeListener(OnSeekBarChangeListener l) {
+	public void setOnSeekArcChangeListener(OnSeekArcChangeListener l) {
 		mOnChangeListener = l;
 	}
 
-    @Override
     public Drawable getThumb() {
         return mThumb;
     }
 
-    @Override
 	public void setProgress(int progress) {
 		updateProgress(progress, false);
 	}
 
-    @Override
 	public int getProgress() {
 		return mProgress;
 	}

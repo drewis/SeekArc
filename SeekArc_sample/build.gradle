@@ -10,6 +10,14 @@ dependencies {
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        minSdkVersion 14
+        targetSdkVersion 21
+        versionCode 100
+        versionName "1.0-SNAPSHOT"
+    }
+
      sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
