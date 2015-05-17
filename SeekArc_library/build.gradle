@@ -12,8 +12,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 21
-        versionCode 101
-        versionName "1.1-SNAPSHOT"
+        versionCode 10101
+        versionName "1.1.1-SNAPSHOT"
     }
      sourceSets {
         main {
@@ -33,5 +33,5 @@ android {
 group "com.triggertrap"
 version android.defaultConfig.versionName
 
-apply from: '../../../OpenSilk/maven_local.gradle'
+apply from: '/opt/workspace/OpenSilk/maven_local.gradle'
 

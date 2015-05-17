@@ -160,10 +160,6 @@ public class SeekArc extends View {
            void onStopTrackingTouch(SeekArc seekArc);
     }
 
-    public SeekArc(Context context) {
-		this(context, null);
-	}
-
 	public SeekArc(Context context, AttributeSet attrs) {
 		this(context, attrs, R.attr.seekArcStyle);
 	}
@@ -171,32 +167,30 @@ public class SeekArc extends View {
 	public SeekArc(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 
-		Log.d(TAG, "Initialising SeekArc");
 		final Resources res = getResources();
 		float density = context.getResources().getDisplayMetrics().density;
 
-		// Defaults, may need to link this into theme settings
-		int arcColor = res.getColor(R.color.progress_gray);
-		int progressColor = res.getColor(android.R.color.holo_blue_light);
-		int thumbHalfheight = 0;
-		int thumbHalfWidth = 0;
-		mThumb = res.getDrawable(R.drawable.seek_arc_control_selector);
 		// Convert progress width to pixels for current density
 		mProgressWidth = (int) (mProgressWidth * density);
 
-		
-		if (attrs != null) {
+		int arcColor;
+		int progressColor;
+
+		if (attrs == null) {
+			throw new NullPointerException("SeekArc must be inflated");
+		}
+		{
 			// Attribute initialization
 			final TypedArray a = context.obtainStyledAttributes(attrs,
 					R.styleable.SeekArc, defStyle, 0);
 
-			Drawable thumb = a.getDrawable(R.styleable.SeekArc_android_thumb);
-			if (thumb != null) {
-				mThumb = thumb;
+			mThumb = a.getDrawable(R.styleable.SeekArc_android_thumb);
+			if (mThumb == null) {
+				throw  new NullPointerException("Theme must set android:thumb");
 			}
 			
-			thumbHalfheight = (int) mThumb.getIntrinsicHeight() / 2;
-			thumbHalfWidth = (int) mThumb.getIntrinsicWidth() / 2;
+			int thumbHalfheight = (int) mThumb.getIntrinsicHeight() / 2;
+			int thumbHalfWidth = (int) mThumb.getIntrinsicWidth() / 2;
 			mThumb.setBounds(-thumbHalfWidth, -thumbHalfheight, thumbHalfWidth,
 					thumbHalfheight);
 
@@ -216,9 +210,10 @@ public class SeekArc extends View {
 			mClockwise = a.getBoolean(R.styleable.SeekArc_clockwise,
 					mClockwise);
 			
-			arcColor = a.getColor(R.styleable.SeekArc_arcColor, arcColor);
+			arcColor = a.getColor(R.styleable.SeekArc_arcColor,
+					res.getColor(R.color.progress_gray));
 			progressColor = a.getColor(R.styleable.SeekArc_progressColor,
-					progressColor);
+					res.getColor(android.R.color.holo_blue_light));
 
 			a.recycle();
 		}
